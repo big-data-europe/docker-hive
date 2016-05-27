@@ -1,0 +1,55 @@
+namenode:
+  image: bde2020/hadoop-namenode:1.0.0
+  hostname: namenode
+  container_name: namenode
+  domainname: hadoop
+  net: hadoop
+  volumes:
+    - ./data/namenode:/hadoop/dfs/name
+  environment:
+    - CLUSTER_NAME=test
+  env_file:
+    - ./hadoop.env
+
+datanode1:
+  image: bde2020/hadoop-datanode:1.0.0
+  hostname: datanode1
+  container_name: datanode1
+  domainname: hadoop
+  net: hadoop
+  volumes:
+    - ./data/datanode1:/hadoop/dfs/data
+  env_file:
+    - ./hadoop.env
+
+datanode2:
+  image: bde2020/hadoop-datanode:1.0.0
+  hostname: datanode2
+  container_name: datanode2
+  domainname: hadoop
+  net: hadoop
+  volumes:
+    - ./data/datanode2:/hadoop/dfs/data
+  env_file:
+    - ./hadoop.env
+
+datanode3:
+  image: bde2020/hadoop-datanode:1.0.0
+  hostname: datanode3
+  container_name: datanode3
+  domainname: hadoop
+  net: hadoop
+  volumes:
+    - ./data/datanode3:/hadoop/dfs/data
+  env_file:
+    - ./hadoop.env
+
+hive:
+ image: bde2020/hive
+ hostname: hive
+ container_name: hive
+ net: hadoop
+ volumes:
+   - ./data/hive:/hive-metastore
+ env_file:
+    - ./hadoop.env 
