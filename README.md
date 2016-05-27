@@ -15,3 +15,13 @@ Then start hiveserver2 by running
 
 Then you can access hiveserver2 from localhost:10000 and hiveserver2 UI from localhost:10002
  
+##### Deploy with docker compose
+You can also deploy Hive with Hadoop with docker compose. It will set up a hadoop cluster with 3 datanodes and hive with hiveserver running. All data are stored in ./data
+
+To do so first create the hadoop network
+
+     docker network create hadoop
+
+Then deploy the cluster with
+
+     docker-compose up
