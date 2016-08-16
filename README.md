@@ -15,3 +15,5 @@ Then start hiveserver2 by running
 
 Then you can access hiveserver2 from localhost:10000 and hiveserver2 UI from localhost:10002
  
+## Testing
+docker run --links hive-server -it --rm hive /opt/hive/bin/beeline -u jdbc:hive2://hive-server:10000
