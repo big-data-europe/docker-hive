@@ -7,10 +7,10 @@ The hive configuration is performed with HIVE_SITE_CONF_ variables (see hadoop-h
 
 To build and run Hive with postgresql metastore:
 ```
-    docker-compose build .
-    docker-compose start namenode hive-metastore-postgresql
-    docker-compose start datanode hive-metastore
-    docker-compose start hive-server
+    docker-compose build
+    docker-compose up namenode hive-metastore-postgresql
+    docker-compose up datanode hive-metastore
+    docker-compose up hive-server
 ```
 
 hive-metastore service depends on hive-metastore-postgresql, which should be up and running before you start hive-metastore.
