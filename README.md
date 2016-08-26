@@ -2,18 +2,22 @@
 
 This is a docker container for Apache Hive. It is based on https://github.com/big-data-europe/docker-hadoop so check there for Hadoop configurations.
 This deploys Hive and starts a hiveserver2 on port 10000. 
-By default metastore_db is located at /hive-metastore. All Hive configuration files are located in the conf directory.
+Metastore is running with a connection to postgresql database. 
+The hive configuration is performed with HIVE_SITE_CONF_ variables (see hadoop-hive.env for an example).
 
-To build docker-hive go into the docker-hive directory and run
+To build and run Hive with postgresql metastore:
+```
+    docker-compose build .
+    docker-compose start namenode hive-metastore-postgresql
+    docker-compose start datanode hive-metastore
+    docker-compose start hive-server
+```
 
-    docker build -t hive .
+hive-metastore service depends on hive-metastore-postgresql, which should be up and running before you start hive-metastore.
+hive-server service depends on hive-metastore service.
 
-To run it first deploy Hadoop (see https://github.com/big-data-europe/docker-hadoop)
-Then start hiveserver2 by running
-
-     docker run --name hive --net=hadoop -p 10000:10000 -p 10002:10002 -v <path/to/metastore_db/location>:/hive-metastore --env-file=./hadoop.env hive
-
-Then you can access hiveserver2 from localhost:10000 and hiveserver2 UI from localhost:10002
- 
 ## Testing
-docker run --links hive-server -it --rm hive /opt/hive/bin/beeline -u jdbc:hive2://hive-server:10000
+docker exec -it hive-server bash 
+```
+  # /opt/hive/bin/beeline -u jdbc:hive2://localhost:10000
+```
