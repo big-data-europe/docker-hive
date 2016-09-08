@@ -17,6 +17,9 @@ RUN apt-get update && apt-get install -y wget && \
 	mv apache-hive-$HIVE_VERSION-bin hive && \
 	rm apache-hive-$HIVE_VERSION-bin.tar.gz
 
+#Install procps
+RUN apt-get update && apt-get install -y procps
+
 ENV HIVE_HOME /opt/hive
 ENV PATH $HIVE_HOME/bin:$PATH
 ENV HADOOP_HOME /opt/hadoop-$HADOOP_VERSION
