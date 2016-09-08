@@ -5,27 +5,23 @@ MAINTAINER Ivan Ermilov <ivan.s.ermilov@gmail.com>
 
 ENV HIVE_VERSION 2.1.0
 
-WORKDIR /opt
-
-#Install Hive
-RUN apt-get update && apt-get install -y wget && \
-	wget http://www-eu.apache.org/dist/hive/hive-$HIVE_VERSION/apache-hive-$HIVE_VERSION-bin.tar.gz && \
-	apt-get --purge remove -y wget && \
-	apt-get clean && \
-	rm -rf /var/lib/apt/lists/* && \
-	tar -xzvf apache-hive-$HIVE_VERSION-bin.tar.gz && \
-	mv apache-hive-$HIVE_VERSION-bin hive && \
-	rm apache-hive-$HIVE_VERSION-bin.tar.gz
-
-#Install procps
-RUN apt-get update && apt-get install -y procps
-
 ENV HIVE_HOME /opt/hive
 ENV PATH $HIVE_HOME/bin:$PATH
 ENV HADOOP_HOME /opt/hadoop-$HADOOP_VERSION
 
-#Install postgresql jdbc
-RUN apt-get update && apt-get install -y wget && wget https://jdbc.postgresql.org/download/postgresql-9.4.1209.jre7.jar -O $HIVE_HOME/lib/postgresql-jdbc.jar && apt-get --purge remove -y wget
+WORKDIR /opt
+
+#Install Hive and PostgreSQL JDBC
+RUN apt-get update && apt-get install -y wget procps && \
+	wget http://www-eu.apache.org/dist/hive/hive-$HIVE_VERSION/apache-hive-$HIVE_VERSION-bin.tar.gz && \
+	tar -xzvf apache-hive-$HIVE_VERSION-bin.tar.gz && \
+	mv apache-hive-$HIVE_VERSION-bin hive && \
+	wget https://jdbc.postgresql.org/download/postgresql-9.4.1209.jre7.jar -O $HIVE_HOME/lib/postgresql-jdbc.jar && \
+	rm apache-hive-$HIVE_VERSION-bin.tar.gz && \
+	apt-get --purge remove -y wget && \
+	apt-get clean && \
+	rm -rf /var/lib/apt/lists/*
+
 
 #Spark should be compiled with Hive to be able to use it
 #hive-site.xml should be copied to $SPARK_HOME/conf folder
