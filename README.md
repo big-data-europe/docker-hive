@@ -2,26 +2,29 @@
 
 This is a docker container for Apache Hive. It is based on https://github.com/big-data-europe/docker-hadoop so check there for Hadoop configurations.
 This deploys Hive and starts a hiveserver2 on port 10000. 
-By default metastore_db is located at /hive-metastore. All Hive configuration files are located in the conf directory.
+Metastore is running with a connection to postgresql database. 
+The hive configuration is performed with HIVE_SITE_CONF_ variables (see hadoop-hive.env for an example).
 
-To build docker-hive go into the docker-hive directory and run
+To build and run Hive with postgresql metastore:
+```
+    docker-compose build
+    docker-compose up -d namenode hive-metastore-postgresql
+    docker-compose up -d datanode hive-metastore
+    docker-compose up -d hive-server
+```
 
-    docker build -t hive .
+hive-metastore service depends on hive-metastore-postgresql, which should be up and running before you start hive-metastore.
+hive-server service depends on hive-metastore service.
 
-To run it first deploy Hadoop (see https://github.com/big-data-europe/docker-hadoop)
-Then start hiveserver2 by running
+## Testing
+docker exec -it hive-server bash 
+```
+  # /opt/hive/bin/beeline -u jdbc:hive2://localhost:10000
+```
 
-     docker run --name hive --net=hadoop -p 10000:10000 -p 10002:10002 -v <path/to/metastore_db/location>:/hive-metastore --env-file=./hadoop.env hive
-
-Then you can access hiveserver2 from localhost:10000 and hiveserver2 UI from localhost:10002
- 
-##### Deploy with docker compose
-You can also deploy Hive with Hadoop with docker compose. It will set up a hadoop cluster with 3 datanodes and hive with hiveserver running. All data are stored in ./data
-
-To do so first create the hadoop network
-
-     docker network create hadoop
-
-Then deploy the cluster with
-
-     docker-compose up
+## Bugs
+When starting the beeline client you will get the following error:
+```
+ls: cannot access /opt/hive/lib/hive-jdbc-*-standalone.jar: No such file or directory
+```
+This is a known bug in Hive 2.1.0. It will be fixed in 2.1.1 and 2.2.0 releases. This error does not affect the connectivity to Hive.

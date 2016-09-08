@@ -15,9 +15,4 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 --><configuration>
-  <property>
-    <name>javax.jdo.option.ConnectionURL</name>
-    <value>jdbc:derby:;databaseName=/hive-metastore/metastore_db;create=true</value>
-    <description>JDBC connect string for a JDBC metastore</description>
-  </property>
 </configuration>
