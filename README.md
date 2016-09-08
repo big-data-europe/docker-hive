@@ -27,4 +27,4 @@ When starting the beeline client you will get the following error:
 ```
 ls: cannot access /opt/hive/lib/hive-jdbc-*-standalone.jar: No such file or directory
 ```
-This is a known bug in Hive 2.1.0. It will be fixed in 2.1.1 and 2.2.0 releases. This error does not affect the connectivity to Hive.
+This is a [known bug](https://issues.apache.org/jira/browse/HIVE-14223)  in Hive 2.1.0 . It will be fixed in 2.1.1 and 2.2.0 releases. This error does not affect the connectivity to Hive.
