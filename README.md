@@ -17,14 +17,7 @@ hive-metastore service depends on hive-metastore-postgresql, which should be up 
 hive-server service depends on hive-metastore service.
 
 ## Testing
-docker exec -it hive-server bash 
 ```
+  docker exec -it hive-server bash
   # /opt/hive/bin/beeline -u jdbc:hive2://localhost:10000
 ```
-
-## Bugs
-When starting the beeline client you will get the following error:
-```
-ls: cannot access /opt/hive/lib/hive-jdbc-*-standalone.jar: No such file or directory
-```
-This is a [known bug](https://issues.apache.org/jira/browse/HIVE-14223)  in Hive 2.1.0 . It will be fixed in 2.1.1 and 2.2.0 releases. This error does not affect the connectivity to Hive.
