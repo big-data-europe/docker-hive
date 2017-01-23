@@ -3,7 +3,7 @@ version: "2"
 services:
   namenode:
     image: bde2020/hadoop-namenode:1.0.0-hadoop2.7.1
-    container_name: namenode
+    container_name: namenode-hive
     volumes:
       - ./data/namenode:/hadoop/dfs/name
     environment:
@@ -12,13 +12,13 @@ services:
       - ./hadoop-hive.env
   datanode:
     image: bde2020/hadoop-datanode:1.0.0-hadoop2.7.1
-    container_name: datanode
+    container_name: datanode-hive
     volumes:
       - ./data/datanode:/hadoop/dfs/data
     env_file:
       - ./hadoop-hive.env
   hive-server:
-    build: .
+    image: bde2020/hive:2.1.0-postgresql-metastore
     container_name: hive-server
     env_file:
       - ./hadoop-hive.env
@@ -30,7 +30,7 @@ services:
     ports:
       - "10000:10000"
   hive-metastore:
-    build: .
+    image: bde2020/hive:2.1.0-postgresql-metastore
     container_name: hive-metastore
     env_file:
       - ./hadoop-hive.env
