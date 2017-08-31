@@ -16,6 +16,14 @@ To build and run Hive with postgresql metastore:
 hive-metastore service depends on hive-metastore-postgresql, which should be up and running before you start hive-metastore.
 hive-server service depends on hive-metastore service.
 
+To run a PrestoDB 0.181 with Hive connector:
+
+```
+  docker-compose up -d presto-coordinator
+```
+
+This deploys a Presto server listens on port `8080`
+
 ## Testing
 ```
   docker exec -it hive-server bash
