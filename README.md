@@ -1,3 +1,5 @@
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/big-data-europe/Lobby)
+
 # docker-hive
 
 This is a docker container for Apache Hive 2.1.1. It is based on https://github.com/big-data-europe/docker-hadoop so check there for Hadoop configurations.
