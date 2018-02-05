@@ -1,9 +1,9 @@
-FROM bde2020/hadoop-base:1.0.0-hadoop2.7.1
+FROM bde2020/hadoop-base:2.0.0-hadoop2.7.4-java8
 
 MAINTAINER Yiannis Mouchakis <gmouchakis@iit.demokritos.gr>
 MAINTAINER Ivan Ermilov <ivan.s.ermilov@gmail.com>
 
-ENV HIVE_VERSION 2.1.0
+ENV HIVE_VERSION 2.3.2
 
 ENV HIVE_HOME /opt/hive
 ENV PATH $HIVE_HOME/bin:$PATH
@@ -13,7 +13,7 @@ WORKDIR /opt
 
 #Install Hive and PostgreSQL JDBC
 RUN apt-get update && apt-get install -y wget procps && \
-	wget http://www-eu.apache.org/dist/hive/hive-$HIVE_VERSION/apache-hive-$HIVE_VERSION-bin.tar.gz && \
+	wget http://apache.mirror.digionline.de/hive/hive-$HIVE_VERSION/apache-hive-$HIVE_VERSION-bin.tar.gz && \
 	tar -xzvf apache-hive-$HIVE_VERSION-bin.tar.gz && \
 	mv apache-hive-$HIVE_VERSION-bin hive && \
 	wget https://jdbc.postgresql.org/download/postgresql-9.4.1209.jre7.jar -O $HIVE_HOME/lib/postgresql-jdbc.jar && \
