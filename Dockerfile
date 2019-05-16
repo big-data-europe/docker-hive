@@ -8,7 +8,7 @@ ARG HIVE_VERSION
 # Set HIVE_VERSION from arg if provided at build, env if provided at run, or default
 # https://docs.docker.com/engine/reference/builder/#using-arg-variables
 # https://docs.docker.com/engine/reference/builder/#environment-replacement
-ENV HIVE_VERSION=${HIVE_VERSION:-2.3.2}
+ENV HIVE_VERSION=${HIVE_VERSION:-2.3.4}
 
 ENV HIVE_HOME /opt/hive
 ENV PATH $HIVE_HOME/bin:$PATH
@@ -17,7 +17,9 @@ ENV HADOOP_HOME /opt/hadoop-$HADOOP_VERSION
 WORKDIR /opt
 
 #Install Hive and PostgreSQL JDBC
-RUN apt-get update && apt-get install -y wget procps && \
+RUN echo "deb http://deb.debian.org/debian jessie main" > /etc/apt/sources.list &&\
+    echo "deb http://security.debian.org jessie/updates main" >> /etc/apt/sources.list &&\
+    apt-get update && apt-get install -y wget procps && \
 	wget https://archive.apache.org/dist/hive/hive-$HIVE_VERSION/apache-hive-$HIVE_VERSION-bin.tar.gz && \
 	tar -xzvf apache-hive-$HIVE_VERSION-bin.tar.gz && \
 	mv apache-hive-$HIVE_VERSION-bin hive && \
@@ -51,3 +53,13 @@ EXPOSE 10002
 
 ENTRYPOINT ["entrypoint.sh"]
 CMD startup.sh
+
+# Install hadoop-aws
+RUN cp $HADOOP_HOME/share/hadoop/tools/lib/aws-java-sdk-1.7.4.jar $HIVE_HOME/lib/
+RUN cp $HADOOP_HOME/share/hadoop/tools/lib/hadoop-aws-2.7.4.jar $HIVE_HOME/lib/
+
+RUN cp $HADOOP_HOME/share/hadoop/tools/lib/aws-java-sdk-1.7.4.jar $HADOOP_HOME/share/hadoop/common/lib/
+RUN cp $HADOOP_HOME/share/hadoop/tools/lib/hadoop-aws-2.7.4.jar $HADOOP_HOME/share/hadoop/common/lib/
+RUN cp $HADOOP_HOME/share/hadoop/tools/lib/jackson-core-2.2.3.jar $HADOOP_HOME/share/hadoop/common/lib/
+RUN cp $HADOOP_HOME/share/hadoop/tools/lib/jackson-annotations-2.2.3.jar $HADOOP_HOME/share/hadoop/common/lib/
+RUN cp $HADOOP_HOME/share/hadoop/tools/lib/jackson-databind-2.2.3.jar $HADOOP_HOME/share/hadoop/common/lib/

@@ -22,7 +22,7 @@ services:
     ports:
       - "50075:50075"
   hive-server:
-    image: bde2020/hive:2.3.2-postgresql-metastore
+    build: .
     env_file:
       - ./hadoop-hive.env
     environment:
@@ -31,7 +31,7 @@ services:
     ports:
       - "10000:10000"
   hive-metastore:
-    image: bde2020/hive:2.3.2-postgresql-metastore
+    build: .
     env_file:
       - ./hadoop-hive.env
     command: /opt/hive/bin/hive --service metastore
