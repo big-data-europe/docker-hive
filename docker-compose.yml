@@ -42,7 +42,11 @@ services:
   hive-metastore-postgresql:
     image: bde2020/hive-metastore-postgresql:2.3.0
   presto-coordinator:
-    image: shawnzhu/prestodb:0.181
+    build: ./presto
+    depends_on:
+      - hive-server
+      - namenode
+      - datanode
     ports:
       - "8080:8080"
 
