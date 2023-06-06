@@ -1,8 +1,8 @@
-version: "3"
+version: "3.5"
 
 services:
   namenode:
-    image: bde2020/hadoop-namenode:2.0.0-hadoop2.7.4-java8
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
     volumes:
       - namenode:/hadoop/dfs/name
     environment:
@@ -10,19 +10,20 @@ services:
     env_file:
       - ./hadoop-hive.env
     ports:
-      - "50070:50070"
+      - "9870:9870"
+      - "9000:9000"
   datanode:
-    image: bde2020/hadoop-datanode:2.0.0-hadoop2.7.4-java8
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
     volumes:
       - datanode:/hadoop/dfs/data
     env_file:
       - ./hadoop-hive.env
     environment:
-      SERVICE_PRECONDITION: "namenode:50070"
+      SERVICE_PRECONDITION: "namenode:9870"
     ports:
-      - "50075:50075"
+      - "9864:9864"
   hive-server:
-    image: bde2020/hive:2.3.2-postgresql-metastore
+    image: bde2020/hive:3.1.2-postgresql-metastore
     env_file:
       - ./hadoop-hive.env
     environment:
@@ -31,16 +32,18 @@ services:
     ports:
       - "10000:10000"
   hive-metastore:
-    image: bde2020/hive:2.3.2-postgresql-metastore
+    image: bde2020/hive:3.1.2-postgresql-metastore
     env_file:
       - ./hadoop-hive.env
     command: /opt/hive/bin/hive --service metastore
     environment:
-      SERVICE_PRECONDITION: "namenode:50070 datanode:50075 hive-metastore-postgresql:5432"
+      SERVICE_PRECONDITION: "namenode:9870 datanode:9864 hive-metastore-postgresql:5432"
     ports:
       - "9083:9083"
   hive-metastore-postgresql:
-    image: bde2020/hive-metastore-postgresql:2.3.0
+    image: bde2020/hive-metastore-postgresql:3.1.0
+    ports:
+      - "5432:5432"
   presto-coordinator:
     image: shawnzhu/prestodb:0.181
     ports:
@@ -49,3 +52,8 @@ services:
 volumes:
   namenode:
   datanode:
+
+# solve java.net.URISyntaxException Illegal character in hostname at index 49: thrift://docker-hive-hive-metastore-1.docker-hive_default:9083
+networks:
+  default:
+    name: docker-hive-default

@@ -110,9 +110,11 @@ function wait_for_it()
     echo "[$i/$max_try] $service:${port} is available."
 }
 
+# shellcheck disable=SC2068
 for i in ${SERVICE_PRECONDITION[@]}
 do
     wait_for_it ${i}
 done
 
+# shellcheck disable=SC2068
 exec $@
